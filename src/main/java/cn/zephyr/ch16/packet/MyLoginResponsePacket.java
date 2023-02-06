@@ -2,8 +2,11 @@ package cn.zephyr.ch16.packet;
 
 import cn.zephyr.ch8.Packet;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import static cn.zephyr.ch16.common.MyCommandEnum.LOGIN_RESPONSE;
 
 /**
  * @ClassName MyLoginResponsePacket
@@ -12,18 +15,22 @@ import lombok.NoArgsConstructor;
  * @Description
  **/
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class MyLoginResponsePacket extends Packet {
-
+    private boolean success;
+    private String userId;
+    private String username;
     private String msg;
+
     @Override
     public Byte getCommand() {
-        return null;
+        return LOGIN_RESPONSE.getCode();
     }
 
     @Override
     public Class<? extends Packet> getCommandType() {
-        return null;
+        return this.getClass();
     }
 }

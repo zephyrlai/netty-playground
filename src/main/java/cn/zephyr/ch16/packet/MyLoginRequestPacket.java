@@ -16,13 +16,14 @@ public class MyLoginRequestPacket extends Packet {
     private String password;
     private int age;
 
+
     @Override
     public Byte getCommand() {
-        return null;
+        return LOGIN_REQUEST;
     }
 
     @Override
     public Class<? extends Packet> getCommandType() {
-        return null;
+        return this.getClass();
     }
 }

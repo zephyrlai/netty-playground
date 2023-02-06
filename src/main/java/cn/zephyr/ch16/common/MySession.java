@@ -17,4 +17,9 @@ public class MySession {
     private String userId;
     private String username;
     private int age;
+
+    public MySession(String userId, String username) {
+        this.userId = userId;
+        this.username = username;
+    }
 }

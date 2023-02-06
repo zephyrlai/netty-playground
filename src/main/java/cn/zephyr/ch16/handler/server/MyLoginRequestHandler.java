@@ -20,16 +20,26 @@ public class MyLoginRequestHandler extends SimpleChannelInboundHandler<MyLoginRe
     protected void channelRead0(ChannelHandlerContext ctx, MyLoginRequestPacket msg) throws Exception {
         // 密码不正确，则直接返回
         if (!checkPassword(msg)) {
-            MyLoginResponsePacket responsePacket = new MyLoginResponsePacket("登录成功");
+            MyLoginResponsePacket responsePacket = MyLoginResponsePacket.builder()
+                    .msg("密码错误，请重试")
+                    .success(false)
+                    .username(msg.getUsername())
+                    .build();
             ctx.channel().writeAndFlush(responsePacket);
             ctx.channel().closeFuture();
         }
         // 绑定 session
-        String userId = UUID.randomUUID().toString();
+        String userId = UUID.randomUUID().toString().substring(0,5);
+        System.err.println("["+userId+" "+msg.getUsername()+"] 登录成功");
         MySession mySession = new MySession(userId, msg.getUsername(), msg.getAge());
         MySessionUtil.bindSession(mySession,ctx.channel());
         // 返回响应
-        MyLoginResponsePacket responsePacket = new MyLoginResponsePacket("登录成功");
+        MyLoginResponsePacket responsePacket = MyLoginResponsePacket.builder()
+                .msg("登录成功")
+                .success(true)
+                .userId(userId)
+                .username(msg.getUsername())
+                .build();
         ctx.channel().writeAndFlush(responsePacket);
     }
 
@@ -43,7 +53,13 @@ public class MyLoginRequestHandler extends SimpleChannelInboundHandler<MyLoginRe
         MySessionUtil.unbindSession(ctx.channel());
     }
 
+    @Override
+    public void channelActive(ChannelHandlerContext ctx) throws Exception {
+        super.channelActive(ctx);
+    }
+
     private boolean checkPassword(MyLoginRequestPacket loginRequestPacket) {
+
         return loginRequestPacket.getPassword().equals("123456");
     }
 }

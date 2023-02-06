@@ -1,5 +1,6 @@
 package cn.zephyr.ch16.handler.client;
 
+import cn.hutool.core.date.DateUtil;
 import cn.zephyr.ch16.packet.MyMessageResponsePacket;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -13,6 +14,6 @@ import io.netty.channel.SimpleChannelInboundHandler;
 public class MyMessageResponseHandler extends SimpleChannelInboundHandler<MyMessageResponsePacket> {
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, MyMessageResponsePacket msg) throws Exception {
-        System.err.println(msg.getFromUserId()+" "+ msg.getFromUsername()+": "+msg.getMessage());
+        System.err.println(DateUtil.now()+" "+msg.getFromUserId()+" "+ msg.getFromUsername()+": "+msg.getMessage());
     }
 }

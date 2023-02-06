@@ -30,8 +30,11 @@ public class MySessionUtil {
      * @param channel
      */
     public static void unbindSession(Channel channel) {
-        userIdAndChannelContainer.remove(getSession(channel).getUserId());
-        channel.attr(MyAttributes.MY_SESSION).set(null);
+        MySession session = getSession(channel);
+        if (session != null) {
+            userIdAndChannelContainer.remove(getSession(channel).getUserId());
+            channel.attr(MyAttributes.MY_SESSION).set(null);
+        }
     }
 
     /**

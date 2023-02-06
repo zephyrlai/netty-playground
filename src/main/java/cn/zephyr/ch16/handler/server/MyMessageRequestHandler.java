@@ -1,5 +1,6 @@
 package cn.zephyr.ch16.handler.server;
 
+import cn.hutool.core.date.DateUtil;
 import cn.zephyr.ch16.common.MySession;
 import cn.zephyr.ch16.common.MySessionUtil;
 import cn.zephyr.ch16.packet.MyMessageRequestPacket;
@@ -25,6 +26,7 @@ public class MyMessageRequestHandler extends SimpleChannelInboundHandler<MyMessa
         Channel clientChannel = MySessionUtil.getChannel(msg.getToUserId());
         // 如果 channel 存在就发送消息，否则不发
         if (clientChannel != null) {
+            System.out.println(DateUtil.now()+" "+session.getUserId() + " -> "+msg.getToUserId()+": "+msg.getMessage());
             clientChannel.writeAndFlush(responsePacket);
         }else {
             System.err.println(msg.getToUserId() + "的客户端不在线。");

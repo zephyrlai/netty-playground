@@ -1,5 +1,8 @@
 package cn.zephyr.ch16;
 
+import cn.zephyr.ch16.handler.common.MyPacketDecoder;
+import cn.zephyr.ch16.handler.common.MyPacketEncoder;
+import cn.zephyr.ch16.handler.common.ProtocolCheckDecoder;
 import cn.zephyr.ch16.handler.server.MyLoginRequestHandler;
 import cn.zephyr.ch16.handler.server.MyMessageRequestHandler;
 import io.netty.bootstrap.ServerBootstrap;
@@ -27,8 +30,14 @@ public class Ch16NettyServer {
                     @Override
                     protected void initChannel(NioSocketChannel ch) throws Exception {
                         ChannelPipeline pipeline = ch.pipeline();
+                        // decoder
+                        pipeline.addLast(new ProtocolCheckDecoder());
+                        pipeline.addLast(new MyPacketDecoder());
+                        // inBoundHandler
                         pipeline.addLast(new MyLoginRequestHandler());
                         pipeline.addLast(new MyMessageRequestHandler());
+                        // encoder
+                        pipeline.addLast(new MyPacketEncoder());
                     }
                 }).bind(8080);
     }

@@ -1,5 +1,6 @@
 package cn.zephyr.ch16.packet;
 
+import cn.zephyr.ch16.common.MyCommandEnum;
 import cn.zephyr.ch8.Packet;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,6 +13,7 @@ import lombok.NoArgsConstructor;
  * @Description
  **/
 @Data
+
 @NoArgsConstructor
 @AllArgsConstructor
 public class MyMessageRequestPacket extends Packet {
@@ -19,13 +21,14 @@ public class MyMessageRequestPacket extends Packet {
     private String toUserId;
     private String message;
 
+
     @Override
     public Byte getCommand() {
-        return null;
+        return MyCommandEnum.MSG_REQUEST.getCode();
     }
 
     @Override
     public Class<? extends Packet> getCommandType() {
-        return null;
+        return this.getClass();
     }
 }
